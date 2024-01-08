@@ -1,0 +1,115 @@
+basePath: /v1
+definitions:
+  handlers.EncryptRequest:
+    properties:
+      data:
+        type: string
+      gpg_passphrase:
+        type: string
+      gpg_private_key:
+        type: string
+      gpg_public_key:
+        type: string
+    type: object
+  handlers.EncryptResponse:
+    properties:
+      data:
+        description: base64-encoded binary data
+        type: string
+    type: object
+  handlers.ErrResponse:
+    properties:
+      created_at:
+        type: string
+      error_message:
+        type: string
+    type: object
+  handlers.SignRequest:
+    properties:
+      data:
+        type: string
+      gpg_passphrase:
+        type: string
+      gpg_private_key:
+        type: string
+    type: object
+  handlers.SignResponse:
+    properties:
+      gpg_signature:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a small, lightweight service to encrypt and sign or just sign
+    files using GPG.
+  license:
+    name: MIT
+    url: https://github.com/cybroslabs/gpg-file-encryptor/blob/main/LICENSE
+  title: GPG Encryptor Service API
+  version: "1.0"
+paths:
+  /v1/encrypt:
+    post:
+      consumes:
+      - application/json
+      description: Encrypt and sign a file supplied in the request body using the
+        public key supplied in the request body.
+      parameters:
+      - description: A JSON struct with base64 encoded file (bin) and strings per
+          public key, private key and passphrase
+        in: body
+        name: encryptRequest
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.EncryptRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns JSON with base64-encoded encrypted and signed file
+          schema:
+            $ref: '#/definitions/handlers.EncryptResponse'
+        "400":
+          description: Error response, bad request
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Error response, error while processing request
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Encrypt and sign a file
+      tags:
+      - GPG
+  /v1/sign:
+    post:
+      consumes:
+      - application/json
+      description: Sign a file supplied in the request body using the public key supplied
+        in the request body.
+      parameters:
+      - description: A JSON struct with base64-encoded file (bin) and strings per
+          private key and passphrase
+        in: body
+        name: signOnlyRequest
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.SignRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns JSON with GPG signature (in plain text)
+          schema:
+            $ref: '#/definitions/handlers.SignResponse'
+        "400":
+          description: Error response, bad request
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Error while signing file
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Sign data
+      tags:
+      - GPG
+swagger: "2.0"
