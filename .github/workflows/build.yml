@@ -43,6 +43,7 @@ jobs:
             type=ref,event=pr
             type=sha,format=long
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+            type=semver,pattern={{raw}},enable=${{ github.ref_type == 'tag' }}
 
       - name: build and push
         uses: docker/build-push-action@v5
