@@ -1,0 +1,24 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/cybroslabs/gpg-encryptor
+  tag: ""
+  pullPolicy: Always
+  pullSecrets: []
+
+resources:
+  # limits:
+  #   cpu: 500m
+  #   memory: 1536Mi
+  # requests:
+  #   cpu: 200m
+  #   memory: 1024Mi
+
+service:
+  type: ClusterIP
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
