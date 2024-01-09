@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.1.4
+
+### Other changes
+
+- ci(build): docker image with git tag tag
+- docs: add release checklist
+- docs(changelog): move changelog to docs/ dir
+- chore: remove .releaserc
+- ci: remove release workflow, doing it manually
+- ci(release): run release workflow on manual trigger only
+- chore(.releaserc): do not add [skip ci] suffix
+
 ## v0.1.3
 
 ### Bugfixes
