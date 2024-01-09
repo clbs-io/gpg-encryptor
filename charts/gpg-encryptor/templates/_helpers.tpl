@@ -18,8 +18,8 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 {{- define "gpg-encryptor.imageTag" -}}
 {{- if .Values.image.tag }}
-{{ .Values.image.tag }}
+{{- .Values.image.tag }}
 {{- else }}
-{{ printf "v%s" .Chart.AppVersion }}
+{{- printf "v%s" .Chart.AppVersion }}
 {{- end }}
 {{- end -}}
