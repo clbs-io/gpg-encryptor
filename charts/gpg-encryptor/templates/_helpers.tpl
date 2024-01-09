@@ -15,3 +15,11 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/name: {{ .Chart.Name }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{- define "gpg-encryptor.imageTag" -}}
+{{- if .Values.image.tag }}
+{{ .Values.image.tag }}
+{{- else }}
+{{ printf "v%s" .Chart.AppVersion }}
+{{- end }}
+{{- end -}}
