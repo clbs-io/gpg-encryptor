@@ -1,0 +1,9 @@
+name: Publish Helm Chart
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  publish:
