@@ -1,5 +1,5 @@
 {
-  "release": {"branches": ["main"]},
+  "branches": ["main"],
   "repositoryUrl": "https://github.com/cybroslabs/gpg-encryptor.git",
   "tagFormat": "v${version}",
   "plugins":
