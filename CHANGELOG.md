@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.1.2
+
+### Bugfix
+
+- fix(helm): properly handle helm appVersion, docker image has v prefix
+- fix(helm): name of .chart template block
+- fix(helm): reset tag to ""
+- ci: remove unfinished workflows (release, publish-helm)
+
 ## v0.1.1
 
 ### Bugfix
