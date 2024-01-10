@@ -22,7 +22,7 @@ var version string = "dev"
 //	@license.name	MIT
 //	@license.url	https://github.com/cybroslabs/gpg-file-encryptor/blob/main/LICENSE
 
-// @BasePath	/v1
+// @BasePath	/
 func main() {
 	server := &http.Server{
 		Addr:         "0.0.0.0:8080",
