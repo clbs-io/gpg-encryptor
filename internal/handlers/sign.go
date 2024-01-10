@@ -21,7 +21,7 @@ import (
 //	@Success		  200		          {object}	SignResponse "Returns JSON with GPG signature (in plain text)"
 //	@Failure		  400		          {object}  ErrResponse	"Error response, bad request"
 //	@Failure		  500		          {object}  ErrResponse	"Error while signing file"
-//	@Router			  /v1/sign   [post]
+//	@Router			  /v1/sign        [post]
 func Sign(w http.ResponseWriter, r *http.Request) {
 	var req SignRequest
 
