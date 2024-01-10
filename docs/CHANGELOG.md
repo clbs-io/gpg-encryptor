@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.5
+
+### Bugfixes
+
+- fix(swagger): base path to remove duplicate /v1/v1 from url in swagger ui
+
 ## v0.1.4
 
 ### Other changes
