@@ -179,7 +179,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "",
-	BasePath:         "/v1",
+	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "GPG Encryptor Service API",
 	Description:      "This is a small, lightweight service to encrypt and sign or just sign files using GPG.",

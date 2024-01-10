@@ -10,7 +10,7 @@
         },
         "version": "1.0"
     },
-    "basePath": "/v1",
+    "basePath": "/",
     "paths": {
         "/v1/encrypt": {
             "post": {
