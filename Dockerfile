@@ -1,4 +1,4 @@
-FROM golang:1.21-alpine AS builder
+FROM golang:alpine AS builder
 
 WORKDIR /build
 
@@ -10,7 +10,7 @@ COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o gpgencryptor .
 
-FROM alpine:3.19 as app
+FROM alpine:3 as app
 
 ARG USERNAME="gpgencryptor"
 ARG UID=1001
