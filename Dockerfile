@@ -1,4 +1,7 @@
-FROM golang:alpine AS builder
+# syntax=docker/dockerfile:1
+FROM --platform=$BUILDPLATFORM golang:1.23-alpine AS builder
+ARG TARGETOS TARGETARCH
+ARG VERSION=v0.0.0
 
 WORKDIR /build
 
@@ -8,9 +11,9 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o gpgencryptor .
+RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o gpgencryptor .
 
-FROM alpine:3 as app
+FROM alpine:latest AS gpg-encryptor
 
 ARG USERNAME="gpgencryptor"
 ARG UID=1001

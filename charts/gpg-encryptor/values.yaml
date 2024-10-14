@@ -1,9 +1,9 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/cybroslabs/gpg-encryptor
-  tag: ""
-  pullPolicy: Always
+  repository: registry.clbs.io/cybroslabs/gpg-encryptor/gpg-encryptor
+  tag:
+  pullPolicy: IfNotPresent
   pullSecrets: []
 
 resources:
@@ -16,6 +16,9 @@ resources:
 
 service:
   type: ClusterIP
+  port:
+    name: http
+    number: 8080
 
 nodeSelector: {}
 

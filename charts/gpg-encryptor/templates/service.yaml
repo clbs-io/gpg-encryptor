@@ -3,13 +3,17 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}
   labels:
-    {{- include "gpg-encryptor.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+
 spec:
-  selector:
-    {{- include "gpg-encryptor.selectorLabels" . | nindent 4 }}
   type: {{ .Values.service.type }}
   ports:
-    - name: http
+    - port: {{ .Values.service.port.number }}
+      targetPort: {{ .Values.service.port.name }}
       protocol: TCP
-      port: 80
-      targetPort: http
+      name: {{ .Values.service.port.name }}
+
+  selector:
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
