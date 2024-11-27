@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"log"
+
 	"github.com/cybroslabs/gpg-encryptor/internal/gpg"
 
 	"github.com/go-chi/render"
@@ -27,13 +29,19 @@ func Encrypt(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
-		render.Render(w, r, ErrInvalidRequest(err))
+		log.Printf("Error decoding request: %v", err)
+		if err = render.Render(w, r, ErrInvalidRequest(err)); err != nil {
+			log.Printf("Error rendering invalid request: %v", err)
+		}
 		return
 	}
 
 	decodedData, err := base64.StdEncoding.DecodeString(req.Data)
 	if err != nil {
-		render.Render(w, r, ErrBase64Decode(err))
+		log.Printf("Error decoding base64 data: %v", err)
+		if err = render.Render(w, r, ErrBase64Decode(err)); err != nil {
+			log.Printf("Error rendering base64 decode error: %v", err)
+		}
 		return
 	}
 
@@ -41,11 +49,16 @@ func Encrypt(w http.ResponseWriter, r *http.Request) {
 
 	encryptedData, err := gpg.Encrypt(decodedData)
 	if err != nil {
-		render.Render(w, r, ErrGPGEncrypt(err))
+		log.Printf("Error encrypting data: %v", err)
+		if err = render.Render(w, r, ErrGPGEncrypt(err)); err != nil {
+			log.Printf("Error rendering gpg encrypt error: %v", err)
+		}
 		return
 	}
 
-	render.Render(w, r, NewEncryptResponse(encryptedData))
+	if err = render.Render(w, r, NewEncryptResponse(encryptedData)); err != nil {
+		log.Printf("Error rendering encrypt response: %v", err)
+	}
 }
 
 type EncryptRequest struct {

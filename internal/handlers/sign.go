@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/base64"
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/go-chi/render"
@@ -27,13 +28,19 @@ func Sign(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
-		render.Render(w, r, ErrInvalidRequest(err))
+		log.Printf("Error decoding request: %v", err)
+		if err = render.Render(w, r, ErrInvalidRequest(err)); err != nil {
+			log.Printf("Error rendering invalid request: %v", err)
+		}
 		return
 	}
 
 	decodedData, err := base64.StdEncoding.DecodeString(req.Data)
 	if err != nil {
-		render.Render(w, r, ErrBase64Decode(err))
+		log.Printf("Error decoding base64 data: %v", err)
+		if err = render.Render(w, r, ErrBase64Decode(err)); err != nil {
+			log.Printf("Error rendering base64 decode error: %v", err)
+		}
 		return
 	}
 
@@ -41,11 +48,16 @@ func Sign(w http.ResponseWriter, r *http.Request) {
 
 	signature, err := gpg.Sign(decodedData)
 	if err != nil {
-		render.Render(w, r, ErrGPGSign(err))
+		log.Printf("Error signing data: %v", err)
+		if err = render.Render(w, r, ErrGPGSign(err)); err != nil {
+			log.Printf("Error rendering gpg sign error: %v", err)
+		}
 		return
 	}
 
-	render.Render(w, r, NewSignResponse(signature))
+	if err = render.Render(w, r, NewSignResponse(signature)); err != nil {
+		log.Printf("Error rendering sign response: %v", err)
+	}
 }
 
 type SignRequest struct {
