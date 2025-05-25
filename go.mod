@@ -6,6 +6,7 @@ toolchain go1.24.3
 
 require (
 	github.com/ProtonMail/gopenpgp/v2 v2.9.0
+	github.com/ProtonMail/gopenpgp/v3 v3.3.0
 	github.com/go-chi/chi/v5 v5.2.1
 	github.com/go-chi/render v1.0.3
 	github.com/swaggo/http-swagger/v2 v2.0.2
