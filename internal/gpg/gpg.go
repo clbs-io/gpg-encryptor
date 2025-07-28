@@ -3,7 +3,7 @@ package gpg
 import (
 	"errors"
 
-	"github.com/ProtonMail/gopenpgp/v2/crypto"
+	"github.com/ProtonMail/gopenpgp/v3/crypto"
 )
 
 type Client struct {
@@ -25,32 +25,29 @@ func (c *Client) WithPublicKey(publicKey string) *Client {
 }
 
 func (c *Client) Sign(data []byte) (string, error) {
-	message := crypto.NewPlainMessage(data)
-
 	signingKeyRing, err := c.privateKeyRing()
 	if err != nil {
 		return "", err
 	}
 
-	pgpSignature, err := signingKeyRing.SignDetached(message)
+	pgp := crypto.PGP()
+	signHandler, err := pgp.Sign().SigningKeys(signingKeyRing).New()
 	if err != nil {
 		return "", err
 	}
 
-	armoredSignature, err := pgpSignature.GetArmored()
+	armored, err := signHandler.Sign(data, crypto.Armor)
 	if err != nil {
 		return "", err
 	}
 
-	return armoredSignature, nil
+	return string(armored), nil
 }
 
 func (c *Client) Encrypt(data []byte) ([]byte, error) {
 	if c.publicKey == "" {
 		return nil, errors.New("public key is not set")
 	}
-
-	message := crypto.NewPlainMessage(data)
 
 	privateKeyRing, err := c.privateKeyRing()
 	if err != nil {
@@ -66,15 +63,21 @@ func (c *Client) Encrypt(data []byte) ([]byte, error) {
 		return nil, err
 	}
 
+	pgp := crypto.PGP()
+	encHandle, err := pgp.Encryption().Recipients(publicKeyRing).New()
+	if err != nil {
+		return nil, err
+	}
+
 	// encrypt and sign
-	encryptedMessage, err := publicKeyRing.Encrypt(message, privateKeyRing)
+	encryptedMessage, err := encHandle.Encrypt(data)
 	if err != nil {
 		return nil, err
 	}
 
 	privateKeyRing.ClearPrivateParams()
 
-	return encryptedMessage.GetBinary(), nil
+	return encryptedMessage.ArmorBytes()
 }
 
 func (c *Client) privateKeyRing() (*crypto.KeyRing, error) {
