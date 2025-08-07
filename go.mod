@@ -2,7 +2,7 @@ module github.com/cybroslabs/gpg-encryptor
 
 go 1.23.0
 
-toolchain go1.24.3
+toolchain go1.24.6
 
 require (
 	github.com/ProtonMail/gopenpgp/v3 v3.3.0
